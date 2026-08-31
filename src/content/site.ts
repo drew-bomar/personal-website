@@ -13,9 +13,11 @@ export const links = {
   sofi: "https://www.sofi.com/",
   homeDepot: "https://www.homedepot.com/",
   washu: "https://wustl.edu/",
-  washuFootball: "https://washubears.com/sports/football",
+  washuFootball: "https://washubears.com/sports/football/roster/drew-bomar/8762",
   footballModel: "https://github.com/drew-bomar/d3_football_predictions",
+  footballSite: "https://drew-bomar.github.io/d3_football_predictions/",
   plaid: "https://plaid.com/",
+  nexusNil: "https://www.nexusnil.ai/",
 } as const;
 
 export type Project = {

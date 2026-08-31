@@ -10,34 +10,39 @@ export default function Home() {
       <P>
         I study CS at <A href={links.washu}>WashU</A>, where I also play{" "}
         <A href={links.washuFootball}>varsity football</A>. I work on backend
-        systems, data pipelines, and the occasional model. I graduate in May
+        systems, infrastructure, and ML. I graduate in May
         2027.
       </P>
 
       <P>
         This summer I was at <A href={links.sofi}>SoFi</A> on the Tech Solutions
         Console team, where I shipped a FastAPI endpoint that now backs ACH
-        workflows moving 4.2M transactions across 42 banks — and closed a
-        fail-open permissions hole on the way through. Alongside it I&rsquo;ve
-        been writing backend at Nexus NIL, where I built a{" "}
-        <A href={links.plaid}>Plaid</A> integration for bank linking and an
-        S3/CloudFront pipeline separating public media from private athlete
-        documents.
+        workflows processing over 4.2M transactions across 42 banks per month,
+        and closed a fail-open permissions vulnerability by standardizing
+        service-to-service authorization. I also worked part-time as a Backend
+        Engineer for <A href={links.nexusNil}>Nexus NIL</A>, where I expanded
+        their capabilities by
+        integrating{" "}
+        <A href={links.plaid}>Plaid</A> for bank linking, S3 and CloudFront for
+        confidential athlete information storage and media display, and
+        FileForms API for individual automated LLC formation.
       </P>
 
       <P>
         Last summer I was at <A href={links.homeDepot}>Home Depot</A> on the
-        Cloud AI team, rebuilding the document ingestion path behind Magic
-        Apron. The RAG pipeline had never handled Word or PowerPoint; by the end
-        complex files processed 9x faster with retrieval quality intact.
+        Cloud AI team as an AI infrastructure engineer, working on the document
+        ingestion path behind their consumer-facing LLM. I expanded the RAG
+        pipeline to handle Word and PowerPoint document types, achieving a 9x
+        faster average processing time compared to PDF conversion methods.
       </P>
 
       <P>
-        On my own time I built a{" "}
+        In my own time I built a{" "}
         <A href={links.footballModel}>prediction model</A> for NCAA Division III
-        football that calls game winners at roughly 80% accuracy — 70+
-        engineered features and a custom Elo system, trained on the games I play
-        in.
+        football that calls game winners at roughly 80% accuracy.
+        I engineered 70+ features and a custom Elo system, and trained a logistic regression model on real NCAA games, some of which I actually played in. 
+        To predict games yourself or learn more, visit{" "}
+        <A href={links.footballSite}>here</A>.
       </P>
 
       <P>
