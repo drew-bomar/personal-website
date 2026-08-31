@@ -25,13 +25,14 @@ export default function Home() {
         integrating{" "}
         <A href={links.plaid}>Plaid</A> for bank linking, S3 and CloudFront for
         confidential athlete information storage and media display, and
-        FileForms API for individual automated LLC formation.
+        the FileForms API for individual automated LLC formation.
       </P>
 
       <P>
         Last summer I was at <A href={links.homeDepot}>Home Depot</A> on the
-        Cloud AI team as an AI infrastructure engineer, working on the document
-        ingestion path behind their consumer-facing LLM. I expanded the RAG
+        Cloud AI team as an AI infrastructure engineering intern, working on the
+        document ingestion path behind their consumer-facing LLM. I expanded
+        the RAG
         pipeline to handle Word and PowerPoint document types, achieving a 9x
         faster average processing time compared to PDF conversion methods.
       </P>

@@ -32,7 +32,7 @@ export const projects: Project[] = [
   {
     name: "NCAA DIII Football Prediction Model",
     period: "July 2025 — present",
-    href: links.footballModel,
+    href: links.footballSite,
     description:
       "An end-to-end system that predicts Division III football outcomes, averaging 79.95% accuracy on game winners through the 2025 season. It pulls game data through a GraphQL ETL pipeline, derives 70+ features including rolling team metrics and a custom Elo rating, and trains calibrated logistic regression models with isotonic regression and time-based cross-validation. The Elo system alone improved accuracy by more than 15%.",
     stack: [
