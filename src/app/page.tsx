@@ -60,6 +60,8 @@ export default function Home() {
 
       <p className="mt-10">
         <Link href="/projects">Projects</Link>
+        {" · "}
+        <Link href="/education">Education</Link>
       </p>
     </Shell>
   );

@@ -45,3 +45,58 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export const education = {
+  school: "Washington University in St. Louis",
+  degree: "B.S. Computer Science",
+  minors: ["Finance", "Jazz Studies"],
+  graduation: "May 2027",
+  gpa: "3.5",
+  act: "35",
+  deansList: "Spring 2026",
+};
+
+/** Curated from the full transcript. Grades and non-relevant courses omitted. */
+export const coursework: { group: string; courses: string[] }[] = [
+  {
+    group: "Computer Science",
+    courses: [
+      "Data Structures and Algorithms",
+      "Analysis of Algorithms",
+      "Object-Oriented Software Development Laboratory",
+      "Introduction to Machine Learning and Pattern Classification",
+      "Web Development",
+      "Logic and Discrete Mathematics",
+      "Cloud Computing with Big Data Applications (in progress)",
+      "Multi-Agent Systems (in progress)",
+      "Software Engineering for External Clients (in progress)",
+      "Rapid Prototype Development and Creative Programming (in progress)",
+    ],
+  },
+  {
+    group: "Math & Statistics",
+    courses: [
+      "Probability and Statistics for Engineering",
+      "Matrix Algebra",
+      "Calculus III",
+    ],
+  },
+  {
+    group: "Finance",
+    courses: [
+      "Capital Markets and Financial Management",
+      "Investments",
+      "Advanced Financial Management",
+      "Principles of Financial Accounting",
+    ],
+  },
+  {
+    group: "Jazz Studies",
+    courses: [
+      "Jazz Theory I & II",
+      "History of Jazz",
+      "Jazz Improvisation I (in progress)",
+      "Jazz Guitar (four semesters)",
+    ],
+  },
+];
