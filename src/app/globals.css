@@ -1,43 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fbfbf9;
-  --foreground: #16161a;
-  --muted: #6b6b73;
-  --line: #e3e3de;
-  --accent: #1b4d3e;
-  --surface: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0d0d0f;
-    --foreground: #ececf0;
-    --muted: #8f8f99;
-    --line: #23232a;
-    --accent: #7fc9ac;
-    --surface: #131317;
-  }
+  color-scheme: light;
+  --background: #f4f3ee;
+  --foreground: #14130f;
+  --accent: #9c3d1e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-line: var(--line);
   --color-accent: var(--accent);
-  --color-surface: var(--surface);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-* {
-  border-color: var(--line);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 16px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -46,12 +28,18 @@ body {
   color: var(--background);
 }
 
-html {
-  scroll-behavior: smooth;
+a {
+  color: var(--accent);
+  text-decoration: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 1px;
 }

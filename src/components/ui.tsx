@@ -1,51 +1,31 @@
 import type { ReactNode } from "react";
 
-export function Section({
-  id,
-  title,
-  children,
-}: {
-  id: string;
-  title: string;
-  children: ReactNode;
-}) {
+/** Page shell — the 672px measure shared by every page. */
+export function Shell({ children }: { children: ReactNode }) {
   return (
-    <section id={id} className="scroll-mt-24 border-t border-line py-14">
-      <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.2em] text-muted">
-        {title}
-      </h2>
+    <div className="mx-auto max-w-[672px] px-6 py-16 sm:py-20">{children}</div>
+  );
+}
+
+export function Title({ children }: { children: ReactNode }) {
+  return (
+    <h1 className="mb-6 text-2xl font-bold text-accent">{children}</h1>
+  );
+}
+
+/** External link. Internal navigation should use next/link instead. */
+export function A({ href, children }: { href: string; children: ReactNode }) {
+  const external = href.startsWith("http");
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+    >
       {children}
-    </section>
+    </a>
   );
 }
 
-export function Tag({ children }: { children: ReactNode }) {
-  return (
-    <li className="rounded-full border border-line bg-surface px-2.5 py-1 font-mono text-[11px] text-muted">
-      {children}
-    </li>
-  );
-}
-
-export function TagList({ items }: { items: readonly string[] }) {
-  return (
-    <ul className="mt-4 flex flex-wrap gap-1.5">
-      {items.map((item) => (
-        <Tag key={item}>{item}</Tag>
-      ))}
-    </ul>
-  );
-}
-
-export function Bullets({ items }: { items: readonly string[] }) {
-  return (
-    <ul className="mt-3 space-y-2">
-      {items.map((item) => (
-        <li key={item} className="flex gap-3 text-[15px] leading-relaxed">
-          <span aria-hidden className="mt-2 size-1 shrink-0 rounded-full bg-accent" />
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
+export function P({ children }: { children: ReactNode }) {
+  return <p className="mb-5">{children}</p>;
 }
