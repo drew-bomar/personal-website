@@ -39,7 +39,7 @@ export default function Home() {
 
       <P>
         In my own time I built a{" "}
-        <A href={links.footballModel}>prediction model</A> for NCAA Division III
+        <Link href="/projects">prediction model</Link> for NCAA Division III
         football that calls game winners at roughly 80% accuracy.
         I engineered 70+ features and a custom Elo system, and trained a logistic regression model on real NCAA games, some of which I actually played in. 
         To predict games yourself or learn more, visit{" "}
