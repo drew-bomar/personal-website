@@ -137,10 +137,10 @@
   filter: blur(14px);
 }
 
-/* ── 4-8. foliage layers ──────────────────────────────────
-   Five layers sharing one 1440x720 coordinate space. Each renders either a
-   transparent asset (img) or generated organic SVG (path). Depth is carried by
-   fill, blur, opacity and parallax multiplier — never by geometry alone. */
+/* ── foliage layers ───────────────────────────────────────
+   Far planes are generated SVG haze; near planes are painterly artwork.
+   Artwork is graded with CSS filters so the warm green source sits inside a
+   cool moonlit palette, and darkened with depth so the foreground silhouettes. */
 
 .layer-foliage svg,
 .layer-foliage img {
@@ -158,8 +158,8 @@
 }
 .layer-canopy-far path {
   fill: #24455e;
-  opacity: 0.42;
-  filter: blur(7px);
+  opacity: 0.34;
+  filter: blur(9px);
 }
 
 .layer-canopy-mid {
@@ -167,33 +167,29 @@
 }
 .layer-canopy-mid path {
   fill: #14293b;
-  opacity: 0.78;
-  filter: blur(3.5px);
+  opacity: 0.6;
+  filter: blur(5px);
 }
 
-.layer-foliage-mid {
-  transform: translate3d(calc(var(--px) * -34px), calc(var(--sy) * 46px), 0);
-}
-.layer-foliage-mid path {
-  fill: #0d2030;
-  opacity: 0.9;
-  filter: blur(1.5px);
-}
-
+/* Midground artwork: cooled and dimmed, sits behind the fog. */
 .layer-foliage-near {
-  transform: translate3d(calc(var(--px) * -52px), calc(var(--sy) * 68px), 0);
-}
-.layer-foliage-near path {
-  fill: #071420;
-}
-
-.layer-foliage-fore {
-  transform: translate3d(calc(var(--px) * -84px), calc(var(--sy) * 96px), 0)
-    scale(1.06);
+  transform: translate3d(calc(var(--px) * -34px), calc(var(--sy) * 52px), 0)
+    scale(1.03);
   transform-origin: bottom center;
 }
-.layer-foliage-fore path {
-  fill: #03070b;
+.layer-foliage-near img {
+  filter: brightness(0.46) saturate(0.7) hue-rotate(-12deg) contrast(1.05);
+}
+
+/* Foreground artwork: near-silhouette, largest parallax, pushed wider so it
+   frames the viewport rather than sitting inside it. */
+.layer-foliage-fore {
+  transform: translate3d(calc(var(--px) * -74px), calc(var(--sy) * 92px), 0)
+    scale(1.22);
+  transform-origin: bottom center;
+}
+.layer-foliage-fore img {
+  filter: brightness(0.2) saturate(0.45) hue-rotate(-14deg);
 }
 
 /* ── 7. fog ───────────────────────────────────────────────── */

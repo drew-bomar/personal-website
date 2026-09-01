@@ -70,8 +70,7 @@ export default function Hero() {
     };
   }, []);
 
-  const [canopyFar, canopyMid, foliageMid, foliageNear, foliageFore] =
-    FOLIAGE_LAYERS;
+  const [canopyFar, canopyMid, foliageNear, foliageFore] = FOLIAGE_LAYERS;
 
   return (
     <section className="scene" ref={ref}>
@@ -112,7 +111,6 @@ export default function Hero() {
 
       <Foliage layer={canopyFar} />
       <Foliage layer={canopyMid} />
-      <Foliage layer={foliageMid} />
 
       {/* fog sits between mid and near so it separates planes */}
       <div className="layer layer-fog" aria-hidden>

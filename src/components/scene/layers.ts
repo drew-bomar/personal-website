@@ -2,7 +2,6 @@ import {
   CANOPY_FAR,
   CANOPY_MID,
   FOLIAGE_FORE,
-  FOLIAGE_MID,
   FOLIAGE_NEAR,
 } from "./foliage";
 
@@ -23,9 +22,12 @@ export type FoliageLayer = {
 };
 
 export const FOLIAGE_LAYERS: FoliageLayer[] = [
+  // Far planes stay generated SVG: heavily blurred, they read as atmospheric
+  // canopy haze rather than vector shapes, so they sit behind the artwork
+  // without a style clash.
   { key: "canopy-far", src: null, paths: CANOPY_FAR },
   { key: "canopy-mid", src: null, paths: CANOPY_MID },
-  { key: "foliage-mid", src: null, paths: FOLIAGE_MID },
-  { key: "foliage-near", src: null, paths: FOLIAGE_NEAR },
-  { key: "foliage-fore", src: null, paths: FOLIAGE_FORE },
+  // Near planes are the painterly artwork.
+  { key: "foliage-near", src: "/scene/foliage-near.webp", paths: FOLIAGE_NEAR },
+  { key: "foliage-fore", src: "/scene/foliage-fore.webp", paths: FOLIAGE_FORE },
 ];
