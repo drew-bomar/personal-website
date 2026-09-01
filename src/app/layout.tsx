@@ -1,10 +1,23 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { profile } from "@/content/site";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+});
+
+// Editorial display face for the hero name.
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-editorial",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+// Clean sans for hero body copy.
+const inter = Inter({
+  variable: "--font-sans-ui",
   subsets: ["latin"],
 });
 
@@ -39,7 +52,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${jetbrainsMono.variable} antialiased`}>{children}</body>
+      <body
+        className={`${jetbrainsMono.variable} ${instrumentSerif.variable} ${inter.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

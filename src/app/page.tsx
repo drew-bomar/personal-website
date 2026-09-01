@@ -1,11 +1,17 @@
 import Link from "next/link";
+import Hero from "@/components/scene/Hero";
 import { A, P, Shell, Title } from "@/components/ui";
 import { links, profile } from "@/content/site";
 
 export default function Home() {
   return (
-    <Shell>
-      <Title>{profile.name}</Title>
+    <>
+      <Hero />
+
+      {/* Below the hero is untouched prototype-stage content. */}
+      <div id="index">
+        <Shell>
+          <Title>{profile.name}</Title>
 
       <P>
         I study CS at <A href={links.washu}>WashU</A>, where I also play{" "}
@@ -64,6 +70,8 @@ export default function Home() {
         {" · "}
         <Link href="/education">Education</Link>
       </p>
-    </Shell>
+        </Shell>
+      </div>
+    </>
   );
 }
