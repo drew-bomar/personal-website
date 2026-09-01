@@ -137,30 +137,63 @@
   filter: blur(14px);
 }
 
-/* ── 4-6. treelines ───────────────────────────────────────── */
-.layer-distant {
-  transform: translate3d(calc(var(--px) * -14px), calc(var(--sy) * 18px), 0);
-}
-.layer-distant path {
-  fill: #2b4a63;
-  opacity: 0.55;
-  filter: blur(2.5px);
+/* ── 4-8. foliage layers ──────────────────────────────────
+   Five layers sharing one 1440x720 coordinate space. Each renders either a
+   transparent asset (img) or generated organic SVG (path). Depth is carried by
+   fill, blur, opacity and parallax multiplier — never by geometry alone. */
+
+.layer-foliage svg,
+.layer-foliage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center bottom;
 }
 
-.layer-mid {
-  transform: translate3d(calc(var(--px) * -28px), calc(var(--sy) * 40px), 0);
+.layer-canopy-far {
+  transform: translate3d(calc(var(--px) * -10px), calc(var(--sy) * 14px), 0);
 }
-.layer-mid path {
-  fill: #0e1f2e;
+.layer-canopy-far path {
+  fill: #24455e;
+  opacity: 0.42;
+  filter: blur(7px);
 }
 
-.layer-fore {
-  transform: translate3d(calc(var(--px) * -58px), calc(var(--sy) * 82px), 0)
-    scale(1.08);
+.layer-canopy-mid {
+  transform: translate3d(calc(var(--px) * -20px), calc(var(--sy) * 28px), 0);
+}
+.layer-canopy-mid path {
+  fill: #14293b;
+  opacity: 0.78;
+  filter: blur(3.5px);
+}
+
+.layer-foliage-mid {
+  transform: translate3d(calc(var(--px) * -34px), calc(var(--sy) * 46px), 0);
+}
+.layer-foliage-mid path {
+  fill: #0d2030;
+  opacity: 0.9;
+  filter: blur(1.5px);
+}
+
+.layer-foliage-near {
+  transform: translate3d(calc(var(--px) * -52px), calc(var(--sy) * 68px), 0);
+}
+.layer-foliage-near path {
+  fill: #071420;
+}
+
+.layer-foliage-fore {
+  transform: translate3d(calc(var(--px) * -84px), calc(var(--sy) * 96px), 0)
+    scale(1.06);
   transform-origin: bottom center;
 }
-.layer-fore path {
-  fill: #04080c;
+.layer-foliage-fore path {
+  fill: #03070b;
 }
 
 /* ── 7. fog ───────────────────────────────────────────────── */

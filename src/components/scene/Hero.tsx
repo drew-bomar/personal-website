@@ -1,25 +1,30 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { FOLIAGE_VIEWBOX } from "./foliage";
+import { FOLIAGE_LAYERS, type FoliageLayer } from "./layers";
 import { STARS } from "./stars";
-import {
-  DISTANT_TREELINE,
-  FOREGROUND_TREELINE,
-  MID_TREELINE,
-  VIEWBOX,
-} from "./treelines";
 import "./scene.css";
 
-/** Treeline SVG. One path, positioned and coloured entirely by CSS. */
-function Treeline({ d, className }: { d: string; className: string }) {
+/**
+ * One environmental layer. Renders a transparent asset when `src` is set,
+ * otherwise the generated organic SVG. All five layers share the same
+ * coordinate space so they compose as a single scene.
+ */
+function Foliage({ layer }: { layer: FoliageLayer }) {
   return (
-    <div className={`layer ${className}`} aria-hidden>
-      <svg
-        viewBox={`0 0 ${VIEWBOX.width} ${VIEWBOX.height}`}
-        preserveAspectRatio="xMidYMax slice"
-      >
-        <path d={d} />
-      </svg>
+    <div className={`layer layer-foliage layer-${layer.key}`} aria-hidden>
+      {layer.src ? (
+        <img src={layer.src} alt="" draggable={false} />
+      ) : (
+        <svg
+          viewBox={`0 0 ${FOLIAGE_VIEWBOX.width} ${FOLIAGE_VIEWBOX.height}`}
+          preserveAspectRatio="xMidYMid slice"
+        >
+          {/* Generated static markup from scripts/generate-foliage.py. */}
+          <g dangerouslySetInnerHTML={{ __html: layer.paths.join("") }} />
+        </svg>
+      )}
     </div>
   );
 }
@@ -27,8 +32,7 @@ function Treeline({ d, className }: { d: string; className: string }) {
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
 
-  // Drive parallax through CSS custom properties rather than re-rendering.
-  // Pointer is rAF-throttled; scroll is clamped to the hero's own height.
+  // Parallax drives CSS custom properties instead of re-rendering.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -66,9 +70,12 @@ export default function Hero() {
     };
   }, []);
 
+  const [canopyFar, canopyMid, foliageMid, foliageNear, foliageFore] =
+    FOLIAGE_LAYERS;
+
   return (
     <section className="scene" ref={ref}>
-      {/* 1 — stars */}
+      {/* stars */}
       <div className="layer layer-stars" aria-hidden>
         <svg viewBox="0 0 1440 280" preserveAspectRatio="xMidYMin slice">
           {STARS.map((s, i) => (
@@ -92,33 +99,34 @@ export default function Hero() {
         </svg>
       </div>
 
-      {/* 2 — moon */}
+      {/* moon */}
       <div className="layer layer-moon" aria-hidden>
         <div className="moon-bloom" />
         <div className="moon-disc" />
       </div>
 
-      {/* 3 — light corridor */}
+      {/* light corridor — the winding negative space through the canopy */}
       <div className="layer layer-river" aria-hidden>
         <div className="river" />
       </div>
 
-      {/* 4-6 — forest depth */}
-      <Treeline d={DISTANT_TREELINE} className="layer-distant" />
-      <Treeline d={MID_TREELINE} className="layer-mid" />
+      <Foliage layer={canopyFar} />
+      <Foliage layer={canopyMid} />
+      <Foliage layer={foliageMid} />
 
-      {/* 7 — fog sits between mid and foreground for real depth */}
+      {/* fog sits between mid and near so it separates planes */}
       <div className="layer layer-fog" aria-hidden>
         <div className="fog fog-b" />
         <div className="fog fog-a" />
         <div className="fog fog-c" />
       </div>
 
-      <Treeline d={FOREGROUND_TREELINE} className="layer-fore" />
+      <Foliage layer={foliageNear} />
+      <Foliage layer={foliageFore} />
 
       <div className="vignette" aria-hidden />
 
-      {/* 8 — content */}
+      {/* content */}
       <div className="scene-content">
         <nav className="scene-nav">
           <span className="mark">DB</span>
@@ -126,26 +134,44 @@ export default function Hero() {
         </nav>
 
         <main className="scene-main">
-          <p className="eyebrow rise" style={{ "--d": "0.1s" } as React.CSSProperties}>
+          <p
+            className="eyebrow rise"
+            style={{ "--d": "0.1s" } as React.CSSProperties}
+          >
             Dream Forest Systems
           </p>
 
-          <h1 className="scene-name rise" style={{ "--d": "0.2s" } as React.CSSProperties}>
+          <h1
+            className="scene-name rise"
+            style={{ "--d": "0.2s" } as React.CSSProperties}
+          >
             Drew Bomar
           </h1>
 
-          <div className="rule rise" style={{ "--d": "0.35s" } as React.CSSProperties} />
+          <div
+            className="rule rise"
+            style={{ "--d": "0.35s" } as React.CSSProperties}
+          />
 
-          <p className="scene-lede rise" style={{ "--d": "0.45s" } as React.CSSProperties}>
+          <p
+            className="scene-lede rise"
+            style={{ "--d": "0.45s" } as React.CSSProperties}
+          >
             Software engineer building intelligent products and systems.
           </p>
 
-          <p className="scene-meta rise" style={{ "--d": "0.6s" } as React.CSSProperties}>
+          <p
+            className="scene-meta rise"
+            style={{ "--d": "0.6s" } as React.CSSProperties}
+          >
             AI · Product · Infrastructure · Design
           </p>
         </main>
 
-        <div className="scene-foot rise" style={{ "--d": "0.8s" } as React.CSSProperties}>
+        <div
+          className="scene-foot rise"
+          style={{ "--d": "0.8s" } as React.CSSProperties}
+        >
           <a className="explore" href="#index">
             <span className="explore-line" aria-hidden />
             Explore
