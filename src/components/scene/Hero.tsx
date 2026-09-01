@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { FOLIAGE_VIEWBOX } from "./foliage";
-import { FOLIAGE_LAYERS, type FoliageLayer } from "./layers";
+import { LAYERS, type FoliageLayer } from "./layers";
 import { STARS } from "./stars";
 import "./scene.css";
 
@@ -70,8 +70,6 @@ export default function Hero() {
     };
   }, []);
 
-  const [canopyFar, canopyMid, foliageNear, foliageFore] = FOLIAGE_LAYERS;
-
   return (
     <section className="scene" ref={ref}>
       {/* stars */}
@@ -109,18 +107,22 @@ export default function Hero() {
         <div className="river" />
       </div>
 
-      <Foliage layer={canopyFar} />
-      <Foliage layer={canopyMid} />
+      <Foliage layer={LAYERS.canopyFar} />
+      <Foliage layer={LAYERS.distant} />
 
-      {/* fog sits between mid and near so it separates planes */}
+      {/* focal subject stands in the corridor, behind the near planes */}
+      <Foliage layer={LAYERS.monolith} />
+      <Foliage layer={LAYERS.waterfall} />
+
+      {/* fog separates the mid and near planes */}
       <div className="layer layer-fog" aria-hidden>
         <div className="fog fog-b" />
         <div className="fog fog-a" />
         <div className="fog fog-c" />
       </div>
 
-      <Foliage layer={foliageNear} />
-      <Foliage layer={foliageFore} />
+      <Foliage layer={LAYERS.near} />
+      <Foliage layer={LAYERS.fore} />
 
       <div className="vignette" aria-hidden />
 

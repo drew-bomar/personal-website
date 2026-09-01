@@ -133,14 +133,15 @@
     rgb(175 219 195 / 0.07) 66%,
     transparent 100%
   );
-  clip-path: polygon(30% 100%, 70% 100%, 56% 0%, 44% 0%);
-  filter: blur(14px);
+  clip-path: polygon(24% 100%, 76% 100%, 60% 0%, 40% 0%);
+  filter: blur(48px);
+  opacity: 0.45;
 }
 
-/* ── foliage layers ───────────────────────────────────────
-   Far planes are generated SVG haze; near planes are painterly artwork.
-   Artwork is graded with CSS filters so the warm green source sits inside a
-   cool moonlit palette, and darkened with depth so the foreground silhouettes. */
+/* ── environmental layers ─────────────────────────────────
+   Framing layers cover the viewport; placed elements (monolith, waterfall) are
+   positioned individually. All artwork is graded toward the cool moonlit
+   palette and darkened with proximity so the foreground silhouettes. */
 
 .layer-foliage svg,
 .layer-foliage img {
@@ -154,42 +155,73 @@
 }
 
 .layer-canopy-far {
-  transform: translate3d(calc(var(--px) * -10px), calc(var(--sy) * 14px), 0);
+  transform: translate3d(calc(var(--px) * -8px), calc(var(--sy) * 12px), 0);
 }
 .layer-canopy-far path {
   fill: #24455e;
-  opacity: 0.34;
-  filter: blur(9px);
+  opacity: 0.3;
+  filter: blur(10px);
 }
 
-.layer-canopy-mid {
-  transform: translate3d(calc(var(--px) * -20px), calc(var(--sy) * 28px), 0);
+/* Distant: the art is already blue-hazed, so it needs little grading. */
+.layer-distant {
+  transform: translate3d(calc(var(--px) * -16px), calc(var(--sy) * 22px), 0);
 }
-.layer-canopy-mid path {
-  fill: #14293b;
-  opacity: 0.6;
-  filter: blur(5px);
+.layer-distant img {
+  filter: brightness(0.52) saturate(0.72) hue-rotate(-8deg);
 }
 
-/* Midground artwork: cooled and dimmed, sits behind the fog. */
-.layer-foliage-near {
-  transform: translate3d(calc(var(--px) * -34px), calc(var(--sy) * 52px), 0)
+/* Monolith: a placed subject, not a framing layer. Sits in the corridor under
+   the moon. Heavily desaturated — the source prism is far too warm and neon
+   for this palette, so it keeps the light and loses the rainbow. */
+.layer-monolith {
+  transform: translate3d(calc(var(--px) * -24px), calc(var(--sy) * 34px), 0);
+}
+.layer-monolith img {
+  inset: auto;
+  left: 34%;
+  bottom: 11%;
+  width: auto;
+  height: 47%;
+  object-fit: contain;
+  filter: brightness(0.72) saturate(0.36) hue-rotate(-16deg) contrast(1.06);
+  opacity: 0.88;
+}
+
+/* Waterfall: right-side counterweight to the left-aligned type. */
+.layer-waterfall {
+  transform: translate3d(calc(var(--px) * -30px), calc(var(--sy) * 42px), 0);
+}
+.layer-waterfall img {
+  inset: auto;
+  right: -2%;
+  bottom: 0;
+  left: auto;
+  width: auto;
+  height: 84%;
+  object-fit: contain;
+  object-position: right bottom;
+  filter: brightness(0.6) saturate(0.62) hue-rotate(-10deg);
+}
+
+/* Near: dense foliage, cooled and dimmed, sits in front of the fog. */
+.layer-near {
+  transform: translate3d(calc(var(--px) * -46px), calc(var(--sy) * 60px), 0)
     scale(1.03);
   transform-origin: bottom center;
 }
-.layer-foliage-near img {
-  filter: brightness(0.46) saturate(0.7) hue-rotate(-12deg) contrast(1.05);
+.layer-near img {
+  filter: brightness(0.34) saturate(0.55) hue-rotate(-12deg);
 }
 
-/* Foreground artwork: near-silhouette, largest parallax, pushed wider so it
-   frames the viewport rather than sitting inside it. */
-.layer-foliage-fore {
-  transform: translate3d(calc(var(--px) * -74px), calc(var(--sy) * 92px), 0)
-    scale(1.22);
+/* Foreground: near-silhouette, widest parallax, scaled to frame the edges. */
+.layer-fore {
+  transform: translate3d(calc(var(--px) * -78px), calc(var(--sy) * 94px), 0)
+    scale(1.24);
   transform-origin: bottom center;
 }
-.layer-foliage-fore img {
-  filter: brightness(0.2) saturate(0.45) hue-rotate(-14deg);
+.layer-fore img {
+  filter: brightness(0.17) saturate(0.4) hue-rotate(-14deg);
 }
 
 /* ── 7. fog ───────────────────────────────────────────────── */
