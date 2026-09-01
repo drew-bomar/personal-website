@@ -108,13 +108,14 @@ export default function Hero() {
       </div>
 
       <Foliage layer={LAYERS.canopyFar} />
-      <Foliage layer={LAYERS.distant} />
+      <Foliage layer={LAYERS.canopyFrame} />
 
-      {/* focal subject stands in the corridor, behind the near planes */}
-      <Foliage layer={LAYERS.monolith} />
-      <Foliage layer={LAYERS.waterfall} />
+      {/* the landform, the falls cut into it, and the basin they drain to */}
+      <Foliage layer={LAYERS.cliffs} />
+      <Foliage layer={LAYERS.grotto} />
+      <Foliage layer={LAYERS.stream} />
 
-      {/* fog separates the mid and near planes */}
+      {/* fog separates the background plates from the near planes */}
       <div className="layer layer-fog" aria-hidden>
         <div className="fog fog-b" />
         <div className="fog fog-a" />
