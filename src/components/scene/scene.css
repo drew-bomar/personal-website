@@ -424,7 +424,7 @@
 .fog-high {
   bottom: 26%;
   height: 15rem;
-  opacity: 0.33;
+  opacity: 0.165;
   -webkit-mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
   mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
 }
@@ -436,7 +436,7 @@
 .fog-valley {
   bottom: 7%;
   height: 20rem;
-  opacity: 0.46;
+  opacity: 0.23;
   -webkit-mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
   mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
 }
@@ -449,7 +449,7 @@
 .fog-base {
   bottom: 12%;
   height: 16rem;
-  opacity: 0.44;
+  opacity: 0.22;
   -webkit-mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
   mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
 }
