@@ -79,28 +79,28 @@ export default function Hero() {
 
   return (
     <section className="scene" ref={ref}>
-      {/* stars */}
+      {/* Stars are divs, not SVG circles. An opacity animation on an SVG child
+          cannot be composited, so 150 of them forced a full repaint of this
+          layer every frame — by far the most expensive thing on the page. Only one in five twinkles; the rest paint once and never again. */}
       <div className="layer layer-stars" aria-hidden>
-        <svg viewBox="0 0 1440 280" preserveAspectRatio="xMidYMin slice">
-          {STARS.map((s, i) => (
-            <circle
-              key={i}
-              className="star"
-              cx={s.cx}
-              cy={s.cy}
-              r={s.r}
-              fill="#e8f1ea"
-              style={
-                {
-                  "--o": s.o,
-                  "--delay": `${s.delay}s`,
-                  "--dur": `${s.dur}s`,
-                  opacity: s.o,
-                } as React.CSSProperties
-              }
-            />
-          ))}
-        </svg>
+        {STARS.map((s, i) => (
+          <span
+            key={i}
+            className={i % 5 === 0 ? "star star-tw" : "star"}
+            style={
+              {
+                left: `${((s.cx / 1440) * 100).toFixed(3)}%`,
+                top: `${((s.cy / 280) * 100).toFixed(3)}%`,
+                width: `${(s.r * 2).toFixed(2)}px`,
+                height: `${(s.r * 2).toFixed(2)}px`,
+                opacity: s.o,
+                "--o": s.o,
+                "--delay": `${s.delay}s`,
+                "--dur": `${s.dur}s`,
+              } as React.CSSProperties
+            }
+          />
+        ))}
       </div>
 
       {/* moon */}
@@ -149,8 +149,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* The near plate drawn three times from one file: the still frame, then
-          two trailing vines cut out of it so each can swing on its own. */}
+      {/* The near plate with its vines masked out, then each vine as its own
+          small cutout so it can swing without rasterising the whole plate. */}
       <div className="layer layer-foliage layer-near" aria-hidden>
         <img
           className="near-still"
@@ -160,25 +160,25 @@ export default function Hero() {
         />
         <img
           className="sway sway-l"
-          src={LAYERS.near.src!}
+          src="/scene/near-vine-l.webp"
           alt=""
           draggable={false}
         />
         <img
           className="sway sway-l2"
-          src={LAYERS.near.src!}
+          src="/scene/near-vine-l2.webp"
           alt=""
           draggable={false}
         />
         <img
           className="sway sway-r"
-          src={LAYERS.near.src!}
+          src="/scene/near-vine-r.webp"
           alt=""
           draggable={false}
         />
         <img
           className="sway sway-r2"
-          src={LAYERS.near.src!}
+          src="/scene/near-vine-r2.webp"
           alt=""
           draggable={false}
         />

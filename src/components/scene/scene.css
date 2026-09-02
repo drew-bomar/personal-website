@@ -52,17 +52,19 @@
 
 /* ── 1. stars ─────────────────────────────────────────────── */
 .layer-stars {
+  inset: 0 0 auto 0;
+  height: 62%;
   transform: translate3d(calc(var(--px) * 6px), calc(var(--py) * 4px), 0);
 }
 
-.layer-stars svg {
-  top: 0;
-  bottom: auto;
-  height: 62%;
-  width: 100%;
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #e8f1ea;
 }
 
-.star {
+/* Only the twinkling ones get promoted; the rest cost nothing per frame. */
+.star-tw {
   animation: twinkle var(--dur, 4s) ease-in-out infinite alternate;
   animation-delay: var(--delay, 0s);
 }
@@ -257,8 +259,8 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: -50%;
-  height: 200%;
+  top: -35%;
+  height: 140%;
   background-image: url("/scene/water-tile.webp");
   background-repeat: repeat;
   will-change: transform;
@@ -266,14 +268,14 @@
 
 /* Broad ribbons. */
 .falls-flow-a {
-  background-size: 100% 25%;
+  background-size: 100% 35.71%;
   animation: falls-a 4s linear infinite;
 }
 /* Finer threads, running faster over a shorter tile — the inner water always
    outruns the broad ribbons, which is what keeps the column from reading as a
    single sheet sliding down. */
 .falls-flow-b {
-  background-size: 100% 16%;
+  background-size: 100% 22.86%;
   /* Blended into the first field rather than averaged over it — stacking the
      two with plain alpha cancelled most of their contrast. */
   mix-blend-mode: hard-light;
@@ -283,12 +285,12 @@
 
 @keyframes falls-a {
   to {
-    transform: translate3d(0, 25%, 0);
+    transform: translate3d(0, 35.71%, 0);
   }
 }
 @keyframes falls-b {
   to {
-    transform: translate3d(0, 16%, 0);
+    transform: translate3d(0, 22.86%, 0);
   }
 }
 
@@ -349,14 +351,14 @@
   top: 0;
   bottom: 0;
   left: -50%;
-  width: 200%;
+  width: 160%;
   background-image: url("/scene/ripple-tile.webp");
   background-repeat: repeat-x;
   will-change: transform;
 }
 
 .pool-ripple-a {
-  background-size: 25% 100%;
+  background-size: 31.25% 100%;
   animation: pool-a 64s linear infinite;
 }
 /* Drifting the opposite way at a different band scale. Neither layer moves
@@ -364,7 +366,7 @@
    which walks their crossings around the surface instead of sliding a fixed
    pattern sideways. */
 .pool-ripple-b {
-  background-size: 21% 100%;
+  background-size: 26.25% 100%;
   mix-blend-mode: hard-light;
   opacity: 0.8;
   animation: pool-b 89s linear infinite reverse;
@@ -372,12 +374,12 @@
 
 @keyframes pool-a {
   to {
-    transform: translate3d(25%, 0, 0);
+    transform: translate3d(31.25%, 0, 0);
   }
 }
 @keyframes pool-b {
   to {
-    transform: translate3d(21%, 0, 0);
+    transform: translate3d(26.25%, 0, 0);
   }
 }
 
@@ -389,6 +391,13 @@
 }
 .layer-near img {
   filter: brightness(0.34) saturate(0.55) hue-rotate(-12deg);
+}
+
+/* Stretch rather than cover, so a vine cutout placed by percentage lands on the
+   plate exactly at every viewport. The plate's aspect is within about 1% of the
+   scene's, so the difference is not visible. */
+.layer-near .near-still {
+  object-fit: fill;
 }
 
 /* 8 — foreground silhouette. Sharpest, darkest, strongest motion. */
@@ -412,33 +421,29 @@
    the obvious choice and the wrong one: graded to brightness 0.17, a vine
    swinging against the sky there barely changes a pixel however far it
    travels. */
-.near-still,
-.sway {
-  -webkit-mask-size: cover;
-  mask-size: cover;
-  -webkit-mask-position: center bottom;
-  mask-position: center bottom;
+.layer-near .near-still {
+  -webkit-mask-image: url("/scene/near-still-mask.webp");
+  mask-image: url("/scene/near-still-mask.webp");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
 
-.near-still {
-  -webkit-mask-image: url("/scene/near-still-mask.webp");
-  mask-image: url("/scene/near-still-mask.webp");
-}
+/* Each vine ships as its own small cutout. Masking a full-size copy hid the
+   pixels but still rasterised the whole plate: four of those cost 80MB of
+   compositor texture at 2x density to move four things covering about 1% of the
+   frame each. These are a couple of hundred pixels square.
 
-/* Rotating about the point each vine hangs from means the attachment never
-   moves and the travel builds toward the tip, which is how a vine hangs — and
-   it keeps the cut invisible, since there is no displacement at the cut to
-   reveal it. `alternate` is right here where it was wrong for the mist: a vine
-   really does swing back.
-
-   All four lean the same way at once and their periods sit close together, so
-   this reads as one air moving through the clearing. The staggered delays let
-   it arrive at the left pair first. Earlier the two vines swung in opposition,
-   which read as two pendulums rather than as weather. */
-.sway {
-  will-change: transform;
+   Each rotates about the point it hangs from, so the attachment never moves,
+   the travel builds toward the tip, and the cut stays invisible because there
+   is no displacement at the cut to reveal it. All four lean the same way at
+   once with periods close together, so it reads as one air moving through the
+   clearing rather than four pendulums. */
+.layer-near .sway {
+  position: absolute;
+  inset: auto;
+  object-fit: fill;
   animation: sway var(--period) ease-in-out infinite alternate;
   animation-delay: var(--lag);
 }
@@ -452,40 +457,48 @@
   }
 }
 
-.sway-l {
-  -webkit-mask-image: url("/scene/near-vine-l-mask.webp");
-  mask-image: url("/scene/near-vine-l-mask.webp");
-  transform-origin: 31.2% 17.7%;
+.layer-near .sway-l {
+  left: 25.239%;
+  top: 13.815%;
+  width: 12.5%;
+  height: 51.116%;
+  transform-origin: 47.368% 7.692%;
   --from: -3.8deg;
   --to: 4deg;
   --period: 10.5s;
   --lag: 0s;
 }
 
-.sway-l2 {
-  -webkit-mask-image: url("/scene/near-vine-l2-mask.webp");
-  mask-image: url("/scene/near-vine-l2-mask.webp");
-  transform-origin: 24.1% 17%;
+.layer-near .sway-l2 {
+  left: 18.301%;
+  top: 14.028%;
+  width: 11.663%;
+  height: 42.402%;
+  transform-origin: 49.744% 8.271%;
   --from: -3.5deg;
   --to: 3.7deg;
   --period: 11.2s;
   --lag: -0.9s;
 }
 
-.sway-r {
-  -webkit-mask-image: url("/scene/near-vine-r-mask.webp");
-  mask-image: url("/scene/near-vine-r-mask.webp");
-  transform-origin: 69.2% 17.7%;
+.layer-near .sway-r {
+  left: 61.962%;
+  top: 13.815%;
+  width: 12.859%;
+  height: 50.372%;
+  transform-origin: 49.767% 7.806%;
   --from: -3.4deg;
   --to: 3.6deg;
   --period: 10.8s;
   --lag: -1.8s;
 }
 
-.sway-r2 {
-  -webkit-mask-image: url("/scene/near-vine-r2-mask.webp");
-  mask-image: url("/scene/near-vine-r2-mask.webp");
-  transform-origin: 75.2% 17%;
+.layer-near .sway-r2 {
+  left: 69.617%;
+  top: 14.028%;
+  width: 11.184%;
+  height: 38.151%;
+  transform-origin: 49.733% 9.749%;
   --from: -3.2deg;
   --to: 3.4deg;
   --period: 11.6s;
@@ -800,7 +813,7 @@
   .pool {
     display: none;
   }
-  .star,
+  .star-tw,
   .fog-drift,
   .sway,
   .explore-line,

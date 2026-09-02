@@ -52,16 +52,41 @@ for key, (x0, x1, y0, y1) in VINES.items():
 union = np.clip(sum(stencils.values()), 0, 1)
 
 
-def write(name, a):
-    m = np.zeros((H, W, 4), np.uint8)
-    m[..., :3] = 255
-    m[..., 3] = (np.clip(a, 0, 1) * 255).astype(np.uint8)
-    Image.fromarray(m).resize((W // 2, H // 2), Image.LANCZOS).save(
-        "public/scene/%s.webp" % name, quality=88, method=6
+m = np.zeros((H, W, 4), np.uint8)
+m[..., :3] = 255
+m[..., 3] = (np.clip(1.0 - union, 0, 1) * 255).astype(np.uint8)
+Image.fromarray(m).resize((W // 2, H // 2), Image.LANCZOS).save(
+    "public/scene/near-still-mask.webp", quality=88, method=6
+)
+
+# Each vine ships as its own small cutout rather than another full-size copy of
+# the plate behind a mask. A mask hides pixels but the layer is still rasterised
+# at full size: four masked copies cost 80MB of compositor texture at 2x density
+# for four vines covering about 1% of the frame each.
+rgba = np.asarray(im).astype(np.float32)
+ANCHORS = {"l": (521, 167), "l2": (403, 165), "r": (1143, 167), "r2": (1257, 167)}
+PAD_X, PAD_TOP, PAD_BOT = 46, 18, 26
+css = []
+for key, st in stencils.items():
+    x0, x1, y0, y1 = VINES[key]
+    cx0, cx1 = max(0, x0 - PAD_X), min(W, x1 + PAD_X)
+    cy0, cy1 = max(0, y0 - PAD_TOP), min(H, y1 + PAD_BOT)
+    cut = rgba[cy0:cy1, cx0:cx1].copy()
+    cut[..., 3] *= st[cy0:cy1, cx0:cx1]
+    Image.fromarray(cut.astype(np.uint8)).save(
+        "public/scene/near-vine-%s.webp" % key, quality=90, method=6
     )
-
-
-write("near-still-mask", 1.0 - union)
-for key, s in stencils.items():
-    write("near-vine-%s-mask" % key, s)
-    print("vine %s covers %.3f%% of the plate" % (key, 100 * (s > 0.05).mean()))
+    ax, ay = ANCHORS[key]
+    pct = lambda v, t: "%.3f%%" % (100.0 * v / t)
+    css.append(
+        ".sway-%s {\n"
+        "  left: %s;\n  top: %s;\n  width: %s;\n  height: %s;\n"
+        "  transform-origin: %s %s;\n}"
+        % (
+            key,
+            pct(cx0, W), pct(cy0, H), pct(cx1 - cx0, W), pct(cy1 - cy0, H),
+            pct(ax - cx0, cx1 - cx0), pct(ay - cy0, cy1 - cy0),
+        )
+    )
+    print("vine %s cutout %dx%d" % (key, cx1 - cx0, cy1 - cy0))
+print("\n".join(css))
