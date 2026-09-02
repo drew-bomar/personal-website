@@ -135,11 +135,18 @@ export default function Hero() {
         </div>
       </Foliage>
 
-      {/* fog separates the background plates from the near planes */}
+      {/* fog separates the background plates from the near planes. Each band is
+          a fixed window the cloud drifts through, so banks form and dissolve. */}
       <div className="layer layer-fog" aria-hidden>
-        <div className="fog fog-b" />
-        <div className="fog fog-a" />
-        <div className="fog fog-c" />
+        <div className="fog fog-high">
+          <div className="fog-drift" />
+        </div>
+        <div className="fog fog-valley">
+          <div className="fog-drift" />
+        </div>
+        <div className="fog fog-base">
+          <div className="fog-drift" />
+        </div>
       </div>
 
       <Foliage layer={LAYERS.near} />

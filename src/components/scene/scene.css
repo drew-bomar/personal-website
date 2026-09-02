@@ -252,7 +252,7 @@
 /* Broad ribbons. */
 .falls-flow-a {
   background-size: 100% 25%;
-  animation: falls-a 3.4s linear infinite;
+  animation: falls-a 4s linear infinite;
 }
 /* Finer threads, running faster over a shorter tile — the inner water always
    outruns the broad ribbons, which is what keeps the column from reading as a
@@ -263,7 +263,7 @@
      two with plain alpha cancelled most of their contrast. */
   mix-blend-mode: hard-light;
   opacity: 0.75;
-  animation: falls-b 1.7s linear infinite;
+  animation: falls-b 2s linear infinite;
 }
 
 @keyframes falls-a {
@@ -386,7 +386,13 @@
   filter: brightness(0.17) saturate(0.4) hue-rotate(-14deg);
 }
 
-/* ── 7. fog ───────────────────────────────────────────────── */
+/* ── 7. mist ──────────────────────────────────────────────────
+   Three bands of vapour between the background plates and the near planes.
+   Each band is a fixed, soft-edged window; the cloud texture drifts through it
+   rather than the band itself sliding, so banks build and thin out in place.
+   Drift is one-way and diagonal — the texture wraps on both axes, so moving it
+   by exactly one tile lands on itself. The old fog slid on `alternate`, which
+   meant it visibly reversed direction and its shape never changed at all. */
 .layer-fog {
   transform: translate3d(calc(var(--px) * 16px), 0, 0);
 }
@@ -395,46 +401,70 @@
   position: absolute;
   left: -25%;
   width: 150%;
-  height: 22rem;
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    rgb(186 214 198 / 0.22) 0%,
-    rgb(186 214 198 / 0.09) 45%,
-    transparent 72%
-  );
+  overflow: hidden;
 }
 
-.fog-a {
+/* Twice the band in both axes, hung half a band up and left, so a one-tile
+   diagonal step never uncovers an edge. */
+.fog-drift {
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("/scene/mist-tile.webp");
+  background-repeat: repeat;
+  background-size: 25% 50%;
+  will-change: transform;
+}
+
+/* Highest and faintest, drifting against the other two so the air never reads
+   as moving in one block. */
+.fog-high {
+  bottom: 26%;
+  height: 15rem;
+  opacity: 0.28;
+  -webkit-mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
+  mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
+}
+.fog-high .fog-drift {
+  animation: mist-west 158s linear infinite;
+}
+
+/* The valley floor. */
+.fog-valley {
+  bottom: 7%;
+  height: 20rem;
+  opacity: 0.4;
+  -webkit-mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
+  mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
+}
+.fog-valley .fog-drift {
+  animation: mist-east 116s linear infinite;
+}
+
+/* Spray standing off the plunge pool: tighter, denser, and centred on the
+   falls rather than the frame. */
+.fog-base {
   bottom: 12%;
-  animation: drift-a 64s ease-in-out infinite alternate;
-}
-.fog-b {
-  bottom: 28%;
   height: 16rem;
-  opacity: 0.7;
-  animation: drift-b 88s ease-in-out infinite alternate;
+  opacity: 0.38;
+  -webkit-mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
+  mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
 }
-.fog-c {
-  bottom: 2%;
-  height: 14rem;
-  opacity: 0.55;
-  animation: drift-a 104s ease-in-out infinite alternate-reverse;
+.fog-base .fog-drift {
+  animation: mist-west 92s linear infinite;
 }
 
-@keyframes drift-a {
-  from {
-    transform: translateX(-6%);
-  }
+/* Both rise; they differ in which way the air is moving. */
+@keyframes mist-east {
   to {
-    transform: translateX(6%);
+    transform: translate3d(25%, -50%, 0);
   }
 }
-@keyframes drift-b {
-  from {
-    transform: translateX(5%);
-  }
+@keyframes mist-west {
   to {
-    transform: translateX(-5%);
+    transform: translate3d(-25%, -50%, 0);
   }
 }
 
@@ -634,9 +664,7 @@
     display: none;
   }
   .star,
-  .fog-a,
-  .fog-b,
-  .fog-c,
+  .fog-drift,
   .explore-line,
   .rise {
     animation: none !important;
