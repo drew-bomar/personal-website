@@ -401,12 +401,12 @@
   filter: brightness(0.17) saturate(0.4) hue-rotate(-14deg);
 }
 
-/* Two trailing vines, cut out of the plate so they can move independently of
-   it. A mask selects but cannot displace, so the plate is drawn three times
-   from the same file — once with the vines removed, once per vine — and only
-   the vine copies rotate. Every stencil is sized `cover` from `center bottom`
-   to match the img's own object-fit, or it would sit a few pixels off the
-   artwork and leave a sliver of the still vine behind the moving one.
+/* Four trailing vines, cut out of the plate so they can move independently of
+   it. A mask selects but cannot displace, so the plate is drawn five times from
+   the same file — once with the vines removed, once per vine — and only the
+   vine copies rotate. Every stencil is sized `cover` from `center bottom` to
+   match the img's own object-fit, or it would sit a few pixels off the artwork
+   and leave a sliver of the still vine behind the moving one.
 
    These live on the near plate rather than the foreground one. Foreground was
    the obvious choice and the wrong one: graded to brightness 0.17, a vine
@@ -429,43 +429,67 @@
 
 /* Rotating about the point each vine hangs from means the attachment never
    moves and the travel builds toward the tip, which is how a vine hangs — and
-   it keeps the cut invisible, since there is no displacement to reveal it.
-   `alternate` is right here where it was wrong for the mist: a vine really
-   does swing back. */
+   it keeps the cut invisible, since there is no displacement at the cut to
+   reveal it. `alternate` is right here where it was wrong for the mist: a vine
+   really does swing back.
+
+   All four lean the same way at once and their periods sit close together, so
+   this reads as one air moving through the clearing. The staggered delays let
+   it arrive at the left pair first. Earlier the two vines swung in opposition,
+   which read as two pendulums rather than as weather. */
 .sway {
   will-change: transform;
+  animation: sway var(--period) ease-in-out infinite alternate;
+  animation-delay: var(--lag);
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(var(--from));
+  }
+  to {
+    transform: rotate(var(--to));
+  }
 }
 
 .sway-l {
   -webkit-mask-image: url("/scene/near-vine-l-mask.webp");
   mask-image: url("/scene/near-vine-l-mask.webp");
   transform-origin: 31.2% 17.7%;
-  animation: sway-l 11s ease-in-out infinite alternate;
+  --from: -3.8deg;
+  --to: 4deg;
+  --period: 10.5s;
+  --lag: 0s;
+}
+
+.sway-l2 {
+  -webkit-mask-image: url("/scene/near-vine-l2-mask.webp");
+  mask-image: url("/scene/near-vine-l2-mask.webp");
+  transform-origin: 24.1% 17%;
+  --from: -3.5deg;
+  --to: 3.7deg;
+  --period: 11.2s;
+  --lag: -0.9s;
 }
 
 .sway-r {
   -webkit-mask-image: url("/scene/near-vine-r-mask.webp");
   mask-image: url("/scene/near-vine-r-mask.webp");
   transform-origin: 69.2% 17.7%;
-  animation: sway-r 8.5s ease-in-out infinite alternate;
-  animation-delay: -3.2s;
+  --from: -3.4deg;
+  --to: 3.6deg;
+  --period: 10.8s;
+  --lag: -1.8s;
 }
 
-@keyframes sway-l {
-  from {
-    transform: rotate(-1.9deg);
-  }
-  to {
-    transform: rotate(2deg);
-  }
-}
-@keyframes sway-r {
-  from {
-    transform: rotate(1.6deg);
-  }
-  to {
-    transform: rotate(-1.75deg);
-  }
+.sway-r2 {
+  -webkit-mask-image: url("/scene/near-vine-r2-mask.webp");
+  mask-image: url("/scene/near-vine-r2-mask.webp");
+  transform-origin: 75.2% 17%;
+  --from: -3.2deg;
+  --to: 3.4deg;
+  --period: 11.6s;
+  --lag: -2.6s;
 }
 
 /* ── 7. mist ──────────────────────────────────────────────────

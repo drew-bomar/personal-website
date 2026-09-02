@@ -152,9 +152,36 @@ export default function Hero() {
       {/* The near plate drawn three times from one file: the still frame, then
           two trailing vines cut out of it so each can swing on its own. */}
       <div className="layer layer-foliage layer-near" aria-hidden>
-        <img className="near-still" src={LAYERS.near.src!} alt="" draggable={false} />
-        <img className="sway sway-l" src={LAYERS.near.src!} alt="" draggable={false} />
-        <img className="sway sway-r" src={LAYERS.near.src!} alt="" draggable={false} />
+        <img
+          className="near-still"
+          src={LAYERS.near.src!}
+          alt=""
+          draggable={false}
+        />
+        <img
+          className="sway sway-l"
+          src={LAYERS.near.src!}
+          alt=""
+          draggable={false}
+        />
+        <img
+          className="sway sway-l2"
+          src={LAYERS.near.src!}
+          alt=""
+          draggable={false}
+        />
+        <img
+          className="sway sway-r"
+          src={LAYERS.near.src!}
+          alt=""
+          draggable={false}
+        />
+        <img
+          className="sway sway-r2"
+          src={LAYERS.near.src!}
+          alt=""
+          draggable={false}
+        />
       </div>
 
       <Foliage layer={LAYERS.fore} />

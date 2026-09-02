@@ -27,7 +27,9 @@ SRC = "public/scene/near.webp"
 # then keeps only the leaves inside them.
 VINES = {
     "l": (468, 585, 148, 585),
+    "l2": (352, 455, 150, 505),
     "r": (1082, 1205, 148, 578),
+    "r2": (1210, 1305, 150, 465),
 }
 
 im = Image.open(SRC).convert("RGBA")
