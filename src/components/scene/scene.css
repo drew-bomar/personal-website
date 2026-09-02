@@ -95,7 +95,7 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgb(185 216 196 / 0.30) 0%,
+    rgb(185 216 196 / 0.3) 0%,
     rgb(185 216 196 / 0.13) 22%,
     rgb(185 216 196 / 0.05) 42%,
     transparent 66%
@@ -110,7 +110,12 @@
   height: 5.5rem;
   margin: -2.75rem 0 0 -2.75rem;
   border-radius: 50%;
-  background: radial-gradient(circle at 38% 34%, var(--moon), #cfe0d2 72%, #a9c4b4);
+  background: radial-gradient(
+    circle at 38% 34%,
+    var(--moon),
+    #cfe0d2 72%,
+    #a9c4b4
+  );
   box-shadow: 0 0 4rem rgb(210 233 219 / 0.45);
 }
 
@@ -172,7 +177,12 @@
 .layer-canopy-frame img {
   filter: brightness(0.36) saturate(0.55) hue-rotate(-10deg) blur(3.5px);
   opacity: 0.72;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 58%,
+    transparent 100%
+  );
   mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
 }
 
@@ -186,7 +196,12 @@
 .layer-cliffs img {
   filter: brightness(0.54) saturate(0.66) hue-rotate(-10deg) blur(1.6px);
   opacity: 0.92;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 74%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 74%,
+    transparent 100%
+  );
   mask-image: linear-gradient(to bottom, #000 0%, #000 74%, transparent 100%);
 }
 
@@ -386,6 +401,73 @@
   filter: brightness(0.17) saturate(0.4) hue-rotate(-14deg);
 }
 
+/* Two trailing vines, cut out of the plate so they can move independently of
+   it. A mask selects but cannot displace, so the plate is drawn three times
+   from the same file — once with the vines removed, once per vine — and only
+   the vine copies rotate. Every stencil is sized `cover` from `center bottom`
+   to match the img's own object-fit, or it would sit a few pixels off the
+   artwork and leave a sliver of the still vine behind the moving one.
+
+   These live on the near plate rather than the foreground one. Foreground was
+   the obvious choice and the wrong one: graded to brightness 0.17, a vine
+   swinging against the sky there barely changes a pixel however far it
+   travels. */
+.near-still,
+.sway {
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.near-still {
+  -webkit-mask-image: url("/scene/near-still-mask.webp");
+  mask-image: url("/scene/near-still-mask.webp");
+}
+
+/* Rotating about the point each vine hangs from means the attachment never
+   moves and the travel builds toward the tip, which is how a vine hangs — and
+   it keeps the cut invisible, since there is no displacement to reveal it.
+   `alternate` is right here where it was wrong for the mist: a vine really
+   does swing back. */
+.sway {
+  will-change: transform;
+}
+
+.sway-l {
+  -webkit-mask-image: url("/scene/near-vine-l-mask.webp");
+  mask-image: url("/scene/near-vine-l-mask.webp");
+  transform-origin: 31.2% 17.7%;
+  animation: sway-l 11s ease-in-out infinite alternate;
+}
+
+.sway-r {
+  -webkit-mask-image: url("/scene/near-vine-r-mask.webp");
+  mask-image: url("/scene/near-vine-r-mask.webp");
+  transform-origin: 69.2% 17.7%;
+  animation: sway-r 8.5s ease-in-out infinite alternate;
+  animation-delay: -3.2s;
+}
+
+@keyframes sway-l {
+  from {
+    transform: rotate(-1.9deg);
+  }
+  to {
+    transform: rotate(2deg);
+  }
+}
+@keyframes sway-r {
+  from {
+    transform: rotate(1.6deg);
+  }
+  to {
+    transform: rotate(-1.75deg);
+  }
+}
+
 /* ── 7. mist ──────────────────────────────────────────────────
    Three bands of vapour between the background plates and the near planes.
    Each band is a fixed, soft-edged window; the cloud texture drifts through it
@@ -425,8 +507,18 @@
   bottom: 26%;
   height: 15rem;
   opacity: 0.165;
-  -webkit-mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
-  mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
+  -webkit-mask-image: radial-gradient(
+    ellipse 60% 56% at 44% 50%,
+    #000 0%,
+    #000 26%,
+    transparent 76%
+  );
+  mask-image: radial-gradient(
+    ellipse 60% 56% at 44% 50%,
+    #000 0%,
+    #000 26%,
+    transparent 76%
+  );
 }
 .fog-high .fog-drift {
   animation: mist-west 74s linear infinite;
@@ -437,8 +529,18 @@
   bottom: 7%;
   height: 20rem;
   opacity: 0.23;
-  -webkit-mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
-  mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
+  -webkit-mask-image: radial-gradient(
+    ellipse 66% 54% at 46% 56%,
+    #000 0%,
+    #000 24%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 66% 54% at 46% 56%,
+    #000 0%,
+    #000 24%,
+    transparent 78%
+  );
 }
 .fog-valley .fog-drift {
   animation: mist-east 54s linear infinite;
@@ -450,8 +552,18 @@
   bottom: 12%;
   height: 16rem;
   opacity: 0.22;
-  -webkit-mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
-  mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
+  -webkit-mask-image: radial-gradient(
+    ellipse 26% 62% at 69% 62%,
+    #000 0%,
+    #000 18%,
+    transparent 74%
+  );
+  mask-image: radial-gradient(
+    ellipse 26% 62% at 69% 62%,
+    #000 0%,
+    #000 18%,
+    transparent 74%
+  );
 }
 .fog-base .fog-drift {
   animation: mist-west 44s linear infinite;
@@ -666,6 +778,7 @@
   }
   .star,
   .fog-drift,
+  .sway,
   .explore-line,
   .rise {
     animation: none !important;
