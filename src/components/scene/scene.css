@@ -210,6 +210,73 @@
   mask-image: linear-gradient(to right, transparent 0%, #000 21%);
 }
 
+/* Falling water. The grotto plate stays perfectly still; a stencil cut from
+   the artwork's own blue-white pixels confines two scrolling streak fields to
+   the water alone, so the cliff, foliage and rocks never shift. The box is
+   declared with the plate's intrinsic ratio so the stencil lands pixel-for-
+   pixel over it. */
+.falls {
+  position: absolute;
+  right: 1%;
+  bottom: 9%;
+  height: 74%;
+  aspect-ratio: 1634 / 931;
+  overflow: hidden;
+  /* Hard-light because the plate is dark: overlay's gain falls off as 2b/255,
+     which on this backdrop left the flow all but invisible. Hard-light lifts the
+     highlights roughly twice as hard while still letting the shadowed water
+     darken, so the moonlit sheen carries the motion. */
+  mix-blend-mode: hard-light;
+  -webkit-mask-image: url("/scene/falls-mask.webp");
+  mask-image: url("/scene/falls-mask.webp");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Twice the box height and hung one box above it, so translating by exactly
+   one tile leaves no uncovered edge. The tile is wrap-periodic, so that
+   translation is an identity and the loop has no seam. */
+.falls-flow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -50%;
+  height: 200%;
+  background-image: url("/scene/water-tile.webp");
+  background-repeat: repeat;
+  will-change: transform;
+}
+
+/* Broad ribbons. */
+.falls-flow-a {
+  background-size: 100% 25%;
+  animation: falls-a 3.4s linear infinite;
+}
+/* Finer threads, running faster over a shorter tile — the inner water always
+   outruns the broad ribbons, which is what keeps the column from reading as a
+   single sheet sliding down. */
+.falls-flow-b {
+  background-size: 100% 16%;
+  /* Blended into the first field rather than averaged over it — stacking the
+     two with plain alpha cancelled most of their contrast. */
+  mix-blend-mode: hard-light;
+  opacity: 0.75;
+  animation: falls-b 1.7s linear infinite;
+}
+
+@keyframes falls-a {
+  to {
+    transform: translate3d(0, 25%, 0);
+  }
+}
+@keyframes falls-b {
+  to {
+    transform: translate3d(0, 16%, 0);
+  }
+}
+
 /* 5 — basin. Wider than the viewport, top masked so the water surface fades up
    into the falls' mist rather than starting at a line. */
 .layer-stream {
@@ -490,6 +557,10 @@
     --px: 0 !important;
     --py: 0 !important;
     --sy: 0 !important;
+  }
+  /* Reduced motion gets the untouched painted waterfall. */
+  .falls {
+    display: none;
   }
   .star,
   .fog-a,

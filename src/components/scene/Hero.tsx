@@ -11,7 +11,13 @@ import "./scene.css";
  * otherwise the generated organic SVG. All five layers share the same
  * coordinate space so they compose as a single scene.
  */
-function Foliage({ layer }: { layer: FoliageLayer }) {
+function Foliage({
+  layer,
+  children,
+}: {
+  layer: FoliageLayer;
+  children?: React.ReactNode;
+}) {
   return (
     <div className={`layer layer-foliage layer-${layer.key}`} aria-hidden>
       {layer.src ? (
@@ -25,6 +31,7 @@ function Foliage({ layer }: { layer: FoliageLayer }) {
           <g dangerouslySetInnerHTML={{ __html: layer.paths.join("") }} />
         </svg>
       )}
+      {children}
     </div>
   );
 }
@@ -112,7 +119,14 @@ export default function Hero() {
 
       {/* the landform, the falls cut into it, and the basin they drain to */}
       <Foliage layer={LAYERS.cliffs} />
-      <Foliage layer={LAYERS.grotto} />
+      {/* The plate itself never moves. Only these two streak fields scroll,
+          stencilled to the falling water and blended into the painted falls. */}
+      <Foliage layer={LAYERS.grotto}>
+        <div className="falls">
+          <div className="falls-flow falls-flow-a" />
+          <div className="falls-flow falls-flow-b" />
+        </div>
+      </Foliage>
       <Foliage layer={LAYERS.stream} />
 
       {/* fog separates the background plates from the near planes */}
