@@ -127,7 +127,13 @@ export default function Hero() {
           <div className="falls-flow falls-flow-b" />
         </div>
       </Foliage>
-      <Foliage layer={LAYERS.stream} />
+      {/* the lit surface shimmers; the rocks standing in it do not */}
+      <Foliage layer={LAYERS.stream}>
+        <div className="pool">
+          <div className="pool-ripple pool-ripple-a" />
+          <div className="pool-ripple pool-ripple-b" />
+        </div>
+      </Foliage>
 
       {/* fog separates the background plates from the near planes */}
       <div className="layer layer-fog" aria-hidden>

@@ -296,6 +296,76 @@
   mask-image: linear-gradient(to bottom, transparent 0%, #000 34%);
 }
 
+/* The stream's surface. Same discipline as the falls: the plate is fixed and a
+   stencil confines the motion to lit water, so the banks and the rocks standing
+   in the channel stay put. Declared with the plate's ratio and anchoring so the
+   stencil lands over it exactly. */
+.pool {
+  position: absolute;
+  left: 50%;
+  bottom: -4%;
+  /* Both declarations mirror the plate exactly. The width never actually takes
+     effect — preflight's `max-width: 100%` clamps the img to the scene width —
+     but stating it the same way here keeps the stencil aligned with the plate
+     if either is ever retuned. */
+  width: 124%;
+  max-width: 100%;
+  aspect-ratio: 1500 / 631;
+  overflow: hidden;
+  transform: translateX(-50%);
+  /* Held well under the falls. The surface covers far more of the frame than
+     the falls do, so matching their amplitude here would have made the water,
+     not the name, the loudest thing on the page. */
+  opacity: 0.32;
+  mix-blend-mode: hard-light;
+  -webkit-mask-image: url("/scene/pool-mask.webp");
+  mask-image: url("/scene/pool-mask.webp");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Twice the width, hung half a box to the left, so drifting by exactly one
+   tile never uncovers an edge. The texture wraps in x, so that drift is an
+   identity and the surface never resets. */
+.pool-ripple {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -50%;
+  width: 200%;
+  background-image: url("/scene/ripple-tile.webp");
+  background-repeat: repeat-x;
+  will-change: transform;
+}
+
+.pool-ripple-a {
+  background-size: 25% 100%;
+  animation: pool-a 64s linear infinite;
+}
+/* Drifting the opposite way at a different band scale. Neither layer moves
+   vertically — the shimmer comes from the two sliding through each other,
+   which walks their crossings around the surface instead of sliding a fixed
+   pattern sideways. */
+.pool-ripple-b {
+  background-size: 21% 100%;
+  mix-blend-mode: hard-light;
+  opacity: 0.8;
+  animation: pool-b 89s linear infinite reverse;
+}
+
+@keyframes pool-a {
+  to {
+    transform: translate3d(25%, 0, 0);
+  }
+}
+@keyframes pool-b {
+  to {
+    transform: translate3d(21%, 0, 0);
+  }
+}
+
 /* 7 — near foliage. First layer that is genuinely sharp. */
 .layer-near {
   transform: translate3d(calc(var(--px) * -46px), calc(var(--sy) * 60px), 0)
@@ -558,8 +628,9 @@
     --py: 0 !important;
     --sy: 0 !important;
   }
-  /* Reduced motion gets the untouched painted waterfall. */
-  .falls {
+  /* Reduced motion gets the untouched painted water. */
+  .falls,
+  .pool {
     display: none;
   }
   .star,
