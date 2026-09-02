@@ -33,12 +33,14 @@ f = (
     + gaussian_filter(n, (8, 17), **wrap) * 0.20
 )
 f = (f - f.mean()) / f.std()
-# Gentle threshold: banks and gaps, but every edge stays a gradient.
-a = np.clip((f + 0.55) / 2.5, 0, 1) ** 1.35
-a = gaussian_filter(a, 5, **wrap)
+# Threshold hard enough that a bank is a definite shape you can follow across
+# the frame, soft enough that every edge is still a gradient. Vapour you cannot
+# track is vapour you cannot see move.
+a = np.clip((f + 0.48) / 2.15, 0, 1) ** 1.28
+a = gaussian_filter(a, 4, **wrap)
 
 out = np.zeros((H, W, 4), np.uint8)
 out[..., 0], out[..., 1], out[..., 2] = TINT
-out[..., 3] = (a * 0.62 * 255).astype(np.uint8)
+out[..., 3] = (a * 0.72 * 255).astype(np.uint8)
 Image.fromarray(out).save("public/scene/mist-tile.webp", quality=86, method=6)
-print("mist", W, H, "alpha mean %.3f peak %.3f" % (a.mean() * 0.62, a.max() * 0.62))
+print("mist", W, H, "alpha mean %.3f peak %.3f" % (a.mean() * 0.72, a.max() * 0.72))

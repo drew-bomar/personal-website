@@ -404,17 +404,18 @@
   overflow: hidden;
 }
 
-/* Twice the band in both axes, hung half a band up and left, so a one-tile
-   diagonal step never uncovers an edge. */
+/* Sized to exactly what a one-tile diagonal step needs and no more: half a
+   band of travel sideways needs 160% of the width hung half a band left, and a
+   full band of rise needs 200% of the height. */
 .fog-drift {
   position: absolute;
   left: -50%;
-  top: -50%;
-  width: 200%;
+  top: 0;
+  width: 160%;
   height: 200%;
   background-image: url("/scene/mist-tile.webp");
   background-repeat: repeat;
-  background-size: 25% 50%;
+  background-size: 31.25% 50%;
   will-change: transform;
 }
 
@@ -423,24 +424,24 @@
 .fog-high {
   bottom: 26%;
   height: 15rem;
-  opacity: 0.28;
+  opacity: 0.33;
   -webkit-mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
   mask-image: radial-gradient(ellipse 60% 56% at 44% 50%, #000 0%, #000 26%, transparent 76%);
 }
 .fog-high .fog-drift {
-  animation: mist-west 158s linear infinite;
+  animation: mist-west 74s linear infinite;
 }
 
 /* The valley floor. */
 .fog-valley {
   bottom: 7%;
   height: 20rem;
-  opacity: 0.4;
+  opacity: 0.46;
   -webkit-mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
   mask-image: radial-gradient(ellipse 66% 54% at 46% 56%, #000 0%, #000 24%, transparent 78%);
 }
 .fog-valley .fog-drift {
-  animation: mist-east 116s linear infinite;
+  animation: mist-east 54s linear infinite;
 }
 
 /* Spray standing off the plunge pool: tighter, denser, and centred on the
@@ -448,23 +449,23 @@
 .fog-base {
   bottom: 12%;
   height: 16rem;
-  opacity: 0.38;
+  opacity: 0.44;
   -webkit-mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
   mask-image: radial-gradient(ellipse 26% 62% at 69% 62%, #000 0%, #000 18%, transparent 74%);
 }
 .fog-base .fog-drift {
-  animation: mist-west 92s linear infinite;
+  animation: mist-west 44s linear infinite;
 }
 
 /* Both rise; they differ in which way the air is moving. */
 @keyframes mist-east {
   to {
-    transform: translate3d(25%, -50%, 0);
+    transform: translate3d(31.25%, -50%, 0);
   }
 }
 @keyframes mist-west {
   to {
-    transform: translate3d(-25%, -50%, 0);
+    transform: translate3d(-31.25%, -50%, 0);
   }
 }
 
