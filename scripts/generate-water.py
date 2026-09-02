@@ -14,6 +14,8 @@ from scipy.ndimage import gaussian_filter, grey_opening
 
 SRC = "public/scene/grotto.webp"
 POOL_Y = 815  # water below this is the basin surface, not the falls
+HAZE_X = 980  # left of here, below HAZE_Y, is haze rather than falling water
+HAZE_Y = 460
 
 im = Image.open(SRC).convert("RGBA")
 W, H = im.size
@@ -35,6 +37,16 @@ score = grey_opening(score, size=(15, 3))
 # Fade out into the basin — pool shimmer is a separate concern.
 ramp = np.clip((POOL_Y - np.arange(H)) / 60.0, 0, 1)[:, None]
 score = score * ramp
+# Below the cliff face the falls' left flank is standing haze, not falling
+# water. It is bright and blue enough to pass the colour test but has nothing
+# to fall from, so animating it read as drifting fog. Keep everything above the
+# cliff line, and below it keep only what lies right of the water's edge; both
+# boundaries are ramped so no edge shows in the stencil.
+xs = np.arange(W)[None, :]
+ys = np.arange(H)[:, None]
+score = score * np.clip(
+    np.clip((xs - HAZE_X) / 80.0, 0, 1) + np.clip((HAZE_Y - ys) / 60.0, 0, 1), 0, 1
+)
 score = gaussian_filter(score, 2.4)
 score = np.clip(score * 1.35, 0, 1)
 
