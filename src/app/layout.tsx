@@ -62,10 +62,12 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var m=matchMedia('(prefers-reduced-motion: reduce)').matches;" +
-              "if(m||localStorage.getItem('df-entered')==='1')" +
+              // `?entrance` replays it every load, for working on it.
+              "try{var f=/[?&]entrance(=|&|$)/.test(location.search);" +
+              "var m=matchMedia('(prefers-reduced-motion: reduce)').matches;" +
+              "if(!f){if(m||localStorage.getItem('df-entered')==='1')" +
               "document.documentElement.classList.add('df-entered');" +
-              "else localStorage.setItem('df-entered','1')}" +
+              "else localStorage.setItem('df-entered','1')}}" +
               "catch(e){document.documentElement.classList.add('df-entered')}",
           }}
         />
