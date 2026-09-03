@@ -172,116 +172,6 @@
   filter: blur(12px);
 }
 
-/* ── birds ────────────────────────────────────────────────────
-   Rare enough to be an event rather than a feature. Each bird holds off-screen
-   at zero opacity for most of a long cycle and crosses in a short window, and
-   the two cycles are chosen not to divide into each other, so passes stay
-   irregular instead of falling into a rhythm. Negative delays put the first
-   pass some seconds after load rather than the moment the page opens.
-
-   Only transform and opacity animate, so this costs the compositor two very
-   small layers and the main thread nothing. */
-.layer-birds {
-  transform: translate3d(calc(var(--px) * -5px), 0, 0);
-}
-
-.bird {
-  position: absolute;
-  opacity: 0;
-  color: #cfe0d6;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  will-change: transform, opacity;
-}
-
-/* Height is explicit: an inline SVG does not take its height from the aspect
-   ratio the way an img does, so `height: auto` collapsed the box to zero. */
-.bird svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-/* The flap is on an inner element so it composes with the crossing without
-   either animation having to know about the other. */
-.bird-wing {
-  display: block;
-  /* Explicit, so the svg's percentage height has something to resolve against;
-     left auto it collapsed the chain to zero and the svg clipped itself away. */
-  height: 100%;
-  transform-origin: 50% 45%;
-  animation: flap 0.42s ease-in-out infinite alternate;
-}
-
-@keyframes flap {
-  from {
-    transform: scaleY(0.5);
-  }
-  to {
-    transform: scaleY(1.15);
-  }
-}
-
-.bird-a {
-  top: 26%;
-  left: 15%;
-  width: 17px;
-  height: 7px;
-  animation-name: cross-a;
-  animation-duration: 62s;
-  animation-delay: -54s;
-}
-
-.bird-b {
-  top: 13.5%;
-  left: 74%;
-  width: 12px;
-  height: 5px;
-  animation-name: cross-b;
-  animation-duration: 89s;
-  animation-delay: -66s;
-}
-.bird-b .bird-wing {
-  animation-duration: 0.36s;
-}
-
-@keyframes cross-a {
-  0% {
-    transform: translate3d(0, 0, 0);
-    opacity: 0;
-  }
-  2% {
-    opacity: 0.5;
-  }
-  20% {
-    opacity: 0.44;
-  }
-  22%,
-  100% {
-    transform: translate3d(56vw, -3.5vh, 0);
-    opacity: 0;
-  }
-}
-
-@keyframes cross-b {
-  0% {
-    transform: translate3d(0, 0, 0) scaleX(-1);
-    opacity: 0;
-  }
-  2% {
-    opacity: 0.42;
-  }
-  16% {
-    opacity: 0.36;
-  }
-  18%,
-  100% {
-    transform: translate3d(-46vw, 2.5vh, 0) scaleX(-1);
-    opacity: 0;
-  }
-}
-
 /* 2 — distant canopy ridge. Near-stationary; bottom dissolves into the cliffs. */
 .layer-canopy-frame {
   transform: translate3d(calc(var(--px) * -6px), calc(var(--sy) * 8px), 0);
@@ -925,8 +815,6 @@
   }
   .star-tw,
   .fog-drift,
-  .bird,
-  .bird-wing,
   .sway,
   .explore-line,
   .rise {
