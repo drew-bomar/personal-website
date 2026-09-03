@@ -77,6 +77,23 @@ export default function Hero() {
     };
   }, []);
 
+  // Any deliberate input ends the entrance at once.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (root.classList.contains("df-skip")) return;
+    const stop = () => root.classList.add("df-skip");
+    const t = window.setTimeout(stop, 2300);
+    window.addEventListener("pointerdown", stop, { once: true, passive: true });
+    window.addEventListener("wheel", stop, { once: true, passive: true });
+    window.addEventListener("keydown", stop, { once: true });
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("pointerdown", stop);
+      window.removeEventListener("wheel", stop);
+      window.removeEventListener("keydown", stop);
+    };
+  }, []);
+
   return (
     <section className="scene" ref={ref}>
       {/* Stars are divs, not SVG circles. An opacity animation on an SVG child
@@ -188,6 +205,17 @@ export default function Hero() {
       <Foliage layer={LAYERS.fore} />
 
       <div className="vignette" aria-hidden />
+
+      {/* First-visit entrance: the camera settles out of the foliage into the
+          clearing. Backgrounds, not <img>, so a returning visitor never fetches
+          the plates — a display:none image is still downloaded, a background is
+          not. */}
+      <div className="entrance" aria-hidden>
+        <div className="enter-veil" />
+        <div className="enter-plate enter-strands" />
+        <div className="enter-plate enter-mid" />
+        <div className="enter-plate enter-near" />
+      </div>
 
       {/* content */}
       <div className="scene-content">

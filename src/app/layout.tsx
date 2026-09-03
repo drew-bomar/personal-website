@@ -55,6 +55,20 @@ export default function RootLayout({
       <body
         className={`${jetbrainsMono.variable} ${instrumentSerif.variable} ${inter.variable} antialiased`}
       >
+        {/* Runs before first paint: a returning visitor must never see a frame
+            of the entrance, and a first-time one must never see a frame of the
+            settled scene before it starts. Flag is set immediately, so a reload
+            part way through does not replay it. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var m=matchMedia('(prefers-reduced-motion: reduce)').matches;" +
+              "if(m||localStorage.getItem('df-entered')==='1')" +
+              "document.documentElement.classList.add('df-entered');" +
+              "else localStorage.setItem('df-entered','1')}" +
+              "catch(e){document.documentElement.classList.add('df-entered')}",
+          }}
+        />
         {children}
       </body>
     </html>

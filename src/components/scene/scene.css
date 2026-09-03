@@ -630,6 +630,112 @@
   );
 }
 
+/* ── first-visit entrance ─────────────────────────────────────
+   Three plates at different depths pull past the camera and fade, nearest
+   first and fastest, which is what reads as moving forward rather than as a
+   zoom. Only transform and opacity animate. The whole thing is display:none
+   for anyone who has been here before, so it costs returning visitors nothing
+   — not even the image fetches, since backgrounds on a hidden element are
+   never requested. */
+.entrance {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.df-entered .entrance,
+.df-skip .entrance {
+  display: none;
+}
+
+.enter-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--sky-0);
+  animation: enter-veil 0.75s ease-out forwards;
+}
+
+.enter-plate {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  will-change: transform, opacity;
+}
+
+/* Closest to the camera: travels furthest and clears first. */
+.enter-near {
+  background-image: url("/scene/enter-near.webp");
+  animation: enter-near 1.35s cubic-bezier(0.22, 0.66, 0.3, 1) forwards;
+}
+
+.enter-mid {
+  background-image: url("/scene/enter-mid.webp");
+  animation: enter-mid 1.75s cubic-bezier(0.22, 0.66, 0.3, 1) forwards;
+}
+
+/* Hangs from the top edge, so it grows away from there rather than from the
+   middle — the canopy lifting as you come out from under it. */
+.enter-strands {
+  background-image: url("/scene/enter-strands.webp");
+  background-position: center top;
+  background-size: 118% auto;
+  transform-origin: 50% 0;
+  animation: enter-strands 2.05s cubic-bezier(0.22, 0.66, 0.3, 1) forwards;
+}
+
+@keyframes enter-veil {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes enter-near {
+  from {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+@keyframes enter-mid {
+  from {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.05);
+    opacity: 0;
+  }
+}
+
+@keyframes enter-strands {
+  from {
+    transform: scale(1.02);
+    opacity: 0.95;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* The copy waits until the camera has almost settled. */
+html:not(.df-entered) .rise {
+  animation-delay: calc(var(--d, 0s) + 1.15s);
+}
+
 /* ── 8. content ───────────────────────────────────────────── */
 .scene-content {
   position: relative;
