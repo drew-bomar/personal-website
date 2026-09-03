@@ -115,6 +115,21 @@ export default function Hero() {
       </div>
 
       <Foliage layer={LAYERS.canopyFar} />
+
+      {/* Two birds crossing the open sky, rarely. Drawn here so the near and
+          foreground foliage passes over them and they can leave frame behind
+          it. Each is one small element moving on the compositor. */}
+      <div className="layer layer-birds" aria-hidden>
+        {(["a", "b"] as const).map((k) => (
+          <div key={k} className={`bird bird-${k}`}>
+            <span className="bird-wing">
+              <svg viewBox="0 0 24 10" aria-hidden>
+                <path d="M1 7C5 1 9 1 12 6C15 1 19 1 23 7C19 4 15 4 12 8C9 4 5 4 1 7Z" />
+              </svg>
+            </span>
+          </div>
+        ))}
+      </div>
       <Foliage layer={LAYERS.canopyFrame} />
 
       {/* the landform, the falls cut into it, and the basin they drain to */}
