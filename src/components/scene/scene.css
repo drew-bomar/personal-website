@@ -653,7 +653,7 @@
   position: absolute;
   inset: 0;
   background: var(--sky-0);
-  animation: enter-veil 0.75s ease-out forwards;
+  animation: enter-veil 0.6s ease-out forwards;
 }
 
 .enter-plate {
@@ -662,28 +662,39 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  /* Grading is baked into the plates, not applied here: a filter on a layer
+     that is also being scaled re-rasterises every frame, and measured an 800ms
+     frame during the entrance. */
   will-change: transform, opacity;
 }
 
-/* Closest to the camera: travels furthest and clears first. */
-.enter-near {
-  background-image: url("/scene/enter-near.webp");
-  animation: enter-near 1.35s cubic-bezier(0.22, 0.66, 0.3, 1) forwards;
+/* Sharpest plate closest, soft mass behind it. That inverts what a real lens
+   would do, but the closest plate is also the most magnified, and these are
+   819px wide: at the scale the first pass used, the blurred one had nothing
+   left to look at. The sharp plate's central gap is what you glimpse the
+   clearing through before the leaves clear it.
+
+   Travel is deliberately short. Pushing a plate this size to 3x turned it into
+   a featureless wash long before it left frame — the effect has to be carried
+   by the leaves staying readable, not by covering distance. */
+.enter-leaves {
+  background-image: url("/scene/enter-mid.webp");
+  animation: enter-leaves 1.9s cubic-bezier(0.36, 0.08, 0.24, 1) forwards;
 }
 
-.enter-mid {
-  background-image: url("/scene/enter-mid.webp");
-  animation: enter-mid 1.75s cubic-bezier(0.22, 0.66, 0.3, 1) forwards;
+.enter-mass {
+  background-image: url("/scene/enter-near.webp");
+  animation: enter-mass 2.25s cubic-bezier(0.36, 0.08, 0.24, 1) forwards;
 }
 
 /* Hangs from the top edge, so it grows away from there rather than from the
    middle — the canopy lifting as you come out from under it. */
-.enter-strands {
+.enter-canopy {
   background-image: url("/scene/enter-strands.webp");
   background-position: center top;
   background-size: 118% auto;
   transform-origin: 50% 0;
-  animation: enter-strands 2.05s cubic-bezier(0.22, 0.66, 0.3, 1) forwards;
+  animation: enter-canopy 2.7s cubic-bezier(0.36, 0.08, 0.24, 1) forwards;
 }
 
 @keyframes enter-veil {
@@ -695,45 +706,50 @@
   }
 }
 
-@keyframes enter-near {
+/* Opacity holds most of the way so the leaves are legible for most of the
+   pass, then goes quickly, rather than dissolving from the first frame. */
+@keyframes enter-leaves {
   from {
-    transform: scale(1.25);
+    transform: scale(1.02) translate3d(0, 0, 0);
     opacity: 1;
   }
-  70% {
-    opacity: 0.5;
+  55% {
+    opacity: 0.92;
   }
   to {
-    transform: scale(3.2);
+    transform: scale(2.15) translate3d(-2.5%, -1.5%, 0);
     opacity: 0;
   }
 }
 
-@keyframes enter-mid {
+@keyframes enter-mass {
   from {
-    transform: scale(1.08);
+    transform: scale(1);
     opacity: 1;
   }
+  45% {
+    opacity: 0.85;
+  }
   to {
-    transform: scale(2.05);
+    transform: scale(1.6);
     opacity: 0;
   }
 }
 
-@keyframes enter-strands {
+@keyframes enter-canopy {
   from {
-    transform: scale(1.02);
+    transform: scale(1);
     opacity: 0.95;
   }
   to {
-    transform: scale(1.5);
+    transform: scale(1.22);
     opacity: 0;
   }
 }
 
 /* The copy waits until the camera has almost settled. */
 html:not(.df-entered) .rise {
-  animation-delay: calc(var(--d, 0s) + 1.15s);
+  animation-delay: calc(var(--d, 0s) + 1.55s);
 }
 
 /* ── 8. content ───────────────────────────────────────────── */

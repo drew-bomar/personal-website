@@ -82,7 +82,7 @@ export default function Hero() {
     const root = document.documentElement;
     if (root.classList.contains("df-skip")) return;
     const stop = () => root.classList.add("df-skip");
-    const t = window.setTimeout(stop, 2300);
+    const t = window.setTimeout(stop, 2950);
     window.addEventListener("pointerdown", stop, { once: true, passive: true });
     window.addEventListener("wheel", stop, { once: true, passive: true });
     window.addEventListener("keydown", stop, { once: true });
@@ -212,9 +212,9 @@ export default function Hero() {
           not. */}
       <div className="entrance" aria-hidden>
         <div className="enter-veil" />
-        <div className="enter-plate enter-strands" />
-        <div className="enter-plate enter-mid" />
-        <div className="enter-plate enter-near" />
+        <div className="enter-plate enter-canopy" />
+        <div className="enter-plate enter-mass" />
+        <div className="enter-plate enter-leaves" />
       </div>
 
       {/* content */}
