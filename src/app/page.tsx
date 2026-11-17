@@ -15,35 +15,44 @@ export default function Home() {
       </P>
 
       <P>
-        This summer I was at <A href={links.sofi}>SoFi</A> on the Tech Solutions
-        Console team, where I shipped a FastAPI endpoint that now backs ACH
-        workflows processing over 4.2M transactions across 42 banks per month,
-        and closed a fail-open permissions vulnerability by standardizing
-        service-to-service authorization. I also worked part-time as a Backend
-        Engineer for <A href={links.nexusNil}>Nexus NIL</A>, where I expanded
-        their capabilities by
-        integrating{" "}
+        This past summer I was a software engineering intern at{" "}
+        <A href={links.sofi}>SoFi</A>, where I built the first production
+        endpoint in a configuration-platform rebuild. It became the config
+        source for ACH workflows that processed 4.2M transactions across 42
+        banks in its first month. I also found and closed an unreported
+        fail-open bug in the service-wide permissions check. At the same time
+        I worked part-time as a backend engineer for{" "}
+        <A href={links.nexusNil}>Nexus NIL</A>, integrating{" "}
         <A href={links.plaid}>Plaid</A> for bank linking, S3 and CloudFront for
-        confidential athlete information storage and media display, and
-        the FileForms API for individual automated LLC formation.
+        confidential athlete information storage and media display, and an
+        LLC formation provider for automated filings.
       </P>
 
       <P>
-        Last summer I was at <A href={links.homeDepot}>Home Depot</A> on the
-        Cloud AI team as an AI infrastructure engineering intern, working on the
-        document ingestion path behind their consumer-facing LLM. I expanded
-        the RAG
-        pipeline to handle Word and PowerPoint document types, achieving a 9x
-        faster average processing time compared to PDF conversion methods.
+        The summer before, I was at <A href={links.homeDepot}>Home Depot</A> on
+        the Cloud AI team as an AI infrastructure engineering intern, working on
+        the document ingestion path behind their consumer-facing LLM. I expanded
+        the RAG pipeline to handle Word and PowerPoint document types, achieving
+        a 9x faster average processing time compared to PDF conversion methods.
       </P>
 
       <P>
         In my own time I built a{" "}
-        <Link href="/projects">prediction model</Link> for NCAA Division III
-        football that calls game winners at roughly 80% accuracy.
-        I engineered 70+ features and a custom Elo system, and trained a logistic regression model on real NCAA games, some of which I actually played in. 
-        To predict games yourself or learn more, visit{" "}
+        <Link href="/projects">prediction system</Link> for NCAA Division III
+        football. It publishes picks before kickoff every week, and this season
+        it called 82.7% of game winners across 457 games. It also predicts
+        spreads and final scores, and the whole weekly cycle runs itself on
+        GitHub Actions. Some of the games it learned from are ones I actually
+        played in. To predict games yourself or learn more, visit{" "}
         <A href={links.footballSite}>here</A>.
+      </P>
+
+      <P>
+        I also built <A href={links.dodo}>DoDo</A>, an iPhone to-do app that
+        keeps your next three tasks on the Lock Screen, which is now in App
+        Store review, and <A href={links.jword}>jword</A>, the job tracker I
+        ran my own search on. More on the{" "}
+        <Link href="/projects">projects</Link> page.
       </P>
 
       <P>
